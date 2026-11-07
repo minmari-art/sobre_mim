@@ -1,0 +1,789 @@
+/* Página "Sobre mim" — independente da home.
+   Só o cabeçalho foi trazido da home; o resto segue o Sobre Mim Layout (1366px), em vw para escalar. */
+
+/* Variáveis */
+:root {
+  --cream: #FFF9EA;
+  --red: #B71515;
+  --green: #C6E384;
+  --dark: #222222;
+  --ink: #1d1d1d;
+  --head: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+  --gutter: clamp(20px, 10vw, 138px);
+  --hero-indent: calc((100vw - 2 * var(--gutter)) / 2.15 * .05); /* alinha a logo do header com o texto da home */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+/* Base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--body);
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+.page { overflow: clip; position: relative; }
+.container { padding-inline: var(--gutter); }
+
+h1, h2, h3 {
+  font-family: var(--head);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1;
+}
+
+:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+
+
+/* ==========================================================
+   Header (igual ao da home)
+   ========================================================== */
+.topbar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 40px;
+}
+
+/* Quadradinhos (logo, Instagram): mesma altura da barra do menu */
+.brand {
+  width: 80px;
+  height: 72px;
+  background: var(--dark);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  margin-left: 2.6%;
+}
+
+/* O script.js mede a margem transparente do PNG (--trim) e amplia a imagem para o desenho ocupar o tamanho certo */
+.brand img,
+.icon-btn img {
+  max-width: none;
+  width: calc(var(--glyph) * var(--trim, var(--trim-fb, 1)));
+  transform: translate(calc(var(--tx, 0) * -100%), calc(var(--ty, 0) * -100%));
+}
+
+.brand img {
+  --glyph: 41px;
+  --trim-fb: 1.25;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 72px;
+  background: var(--dark);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--cream);
+  font-weight: 500;
+  font-size: 1.15rem;
+  flex: 0 1 auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav a {
+  padding: 6px 16px;
+  border-radius: 5px;
+  white-space: nowrap;
+  transition: background-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+
+.nav a.is-active { background: var(--green); color: var(--ink); }
+.nav a:not(.is-active):hover { background: rgba(255, 255, 255, .1); transform: translateY(-2px); }
+
+.icon-btn {
+  width: 80px;
+  height: 72px;
+  background: var(--dark);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.icon-btn img {
+  --glyph: 40px;
+  --trim-fb: 1.25;
+}
+
+.brand,
+.icon-btn {
+  transition: transform .4s var(--ease), background-color .3s var(--ease);
+}
+
+.brand:hover,
+.icon-btn:hover {
+  transform: translateY(-4px) rotate(-4deg);
+  background-color: #2f2f2f;
+}
+
+.brand:active,
+.icon-btn:active { transform: scale(.94); }
+
+/* Desktop (a partir de 1001px): proporções em vw, escala junto com a tela */
+@media (min-width: 1001px) {
+  .topbar {
+    --box-w: clamp(56px, 5.2vw, 71px);     /* largura dos quadradinhos */
+    --box-h: clamp(52px, 4.83vw, 66px);    /* altura dos quadradinhos e do menu */
+    --hgap: clamp(14px, 1.8vw, 32px);      /* espaço igual entre logo → menu → Instagram */
+    gap: 0;
+    justify-content: center;               /* o conjunto todo fica no centro da página */
+  }
+
+  .brand,
+  .icon-btn {
+    width: var(--box-w);
+    height: var(--box-h);
+  }
+
+  .brand { margin-left: 0; }
+
+  /* desenho visível = 57,7% (logo) e 56,3% (ícones) do quadradinho */
+  .brand img { --glyph: calc(var(--box-w) * .577); }
+  .icon-btn img { --glyph: calc(var(--box-w) * .563); }
+
+  .nav {
+    flex: 0 0 auto;
+    width: auto;
+    height: var(--box-h);
+    justify-content: center;
+    gap: clamp(6px, 1vw, 20px);
+    align-items: center;
+    padding: 0 clamp(8px, .9vw, 14px);
+    font-size: clamp(.95rem, 1.6vw, 1.375rem);
+    margin-left: var(--hgap);
+    margin-right: 0;
+  }
+
+  .nav + .icon-btn { margin-left: var(--hgap); }
+
+  .nav a {
+    display: flex;
+    align-items: center;
+    height: clamp(36px, 3.3vw, 45px);
+    padding: 0 clamp(12px, 1.2vw, 16px);
+  }
+
+  .icon-btn + .icon-btn { margin-left: var(--hgap); }
+}
+
+/* Tablet e celular: tamanhos da logo (o menu do cabeçalho some e entra o menu lateral, mais abaixo) */
+@media (max-width: 1000px) {
+  .brand { height: 62px; width: 68px; }
+  .brand img { --glyph: 36px; }
+}
+
+@media (max-width: 600px) {
+  :root { --gutter: 18px; }
+  .topbar { padding-top: 20px; }
+}
+
+
+/* ==========================================================
+   Menu lateral (sidebar)
+   O botão e o painel são criados pelo script.js.
+   ========================================================== */
+.menu-toggle { display: none; }
+
+html.menu-open { overflow: hidden; }
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  visibility: hidden;
+  transition: visibility 0s linear .55s;   /* só some depois que o painel terminou de sair */
+}
+
+.drawer.is-open {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 20, 20, .6);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+}
+
+.drawer.is-open .drawer__backdrop { opacity: 1; }
+
+.drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(340px, 86vw);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 22px 28px;
+  background: var(--dark);
+  color: var(--cream);
+  overflow-y: auto;
+  box-shadow: -30px 0 60px -20px rgba(0, 0, 0, .5);
+  transform: translateX(100%);
+  transition: transform .55s var(--ease);
+}
+
+.drawer.is-open .drawer__panel { transform: none; }
+
+.drawer__close {
+  align-self: flex-end;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--cream);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .4s var(--ease), background-color .3s var(--ease), color .3s var(--ease);
+}
+
+.drawer__close:hover {
+  transform: rotate(90deg) scale(1.08);
+  background: var(--green);
+  color: var(--ink);
+}
+
+.drawer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 26px;
+}
+
+.drawer__nav a {
+  font: 800 1.55rem var(--head);
+  letter-spacing: -.03em;
+  padding: 14px 16px;
+  border-radius: 8px;
+  opacity: 0;
+  translate: 28px 0;
+  transition: opacity .3s var(--ease), translate .3s var(--ease), background-color .3s var(--ease), color .3s var(--ease);
+}
+
+.drawer.is-open .drawer__nav a {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity .6s var(--ease) calc(.15s + var(--i, 0) * .07s),
+    translate .6s var(--ease) calc(.15s + var(--i, 0) * .07s),
+    background-color .3s var(--ease),
+    color .3s var(--ease);
+}
+
+.drawer__nav a:hover { background: rgba(255, 255, 255, .1); }
+
+.drawer__nav a.is-active {
+  background: var(--green);
+  color: var(--ink);
+}
+
+/* WhatsApp e Instagram no fim do painel: ícone + nome, um embaixo do outro */
+.drawer__social {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 28px;
+}
+
+.drawer__btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 58px;
+  padding: 0 16px;
+  background: #333;
+  border-radius: 8px;
+  font: 600 1.05rem var(--body);
+  color: var(--cream);
+  transition: transform .4s var(--ease), background-color .3s var(--ease);
+}
+
+.drawer__btn:hover {
+  transform: translateX(-4px);
+  background: #3d3d3d;
+}
+
+.drawer__btn img {
+  --glyph: 30px;
+  --trim-fb: 1.25;
+  flex: none;
+  max-width: none;
+  width: calc(var(--glyph) * var(--trim, var(--trim-fb, 1)));
+  /* o ícone ocupa sempre um espaço de 34px, não importa a margem transparente da imagem */
+  margin-inline: calc((34px - var(--glyph) * var(--trim, var(--trim-fb, 1))) / 2);
+  transform: translate(calc(var(--tx, 0) * -100%), calc(var(--ty, 0) * -100%));
+}
+
+/* Tablet e celular: o menu do cabeçalho some e entra o botão do menu lateral */
+@media (max-width: 1000px) {
+  .topbar {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .topbar > .nav,
+  .topbar > .icon-btn { display: none; }
+
+  .brand { margin: 0; }
+
+  .menu-toggle {
+    flex: none;
+    display: grid;
+    place-content: center;
+    gap: 6px;
+    width: 68px;
+    height: 62px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: var(--dark);
+    cursor: pointer;
+    transition: transform .4s var(--ease), background-color .3s var(--ease);
+  }
+
+  .menu-toggle span {
+    display: block;
+    width: 28px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--green);
+    transition: transform .4s var(--ease), width .4s var(--ease);
+  }
+
+  .menu-toggle span:nth-child(2) { width: 20px; margin-left: auto; }
+
+  .menu-toggle:hover { background: #2f2f2f; transform: translateY(-3px); }
+  .menu-toggle:hover span:nth-child(2) { width: 28px; }
+  .menu-toggle:active { transform: scale(.94); }
+}
+
+@media (max-width: 600px) {
+  .menu-toggle { width: 60px; height: 56px; }
+  .brand { width: 62px; height: 56px; }
+  .drawer__nav a { font-size: 1.4rem; }
+}
+
+
+
+/* ==========================================================
+   Sobre mim
+   ========================================================== */
+
+/* Hero: licença à esquerda, texto à direita */
+.s-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 47.6vw 1fr;
+  align-items: center;
+  padding: 35px var(--gutter) 0 0;
+  min-height: calc(30.4vw + 35px);
+}
+
+.s-hero__license {
+  position: absolute;
+  left: -1.2vw;
+  top: 35px;
+  width: 54vw;
+  max-width: none;
+  z-index: 1;
+}
+
+.s-hero__text { grid-column: 2; position: relative; z-index: 2; }
+
+.s-hero h1 {
+  font-size: clamp(2.6rem, 4.8vw, 5.4rem);
+  color: var(--red);
+  margin-bottom: clamp(18px, 2.2vw, 36px);
+}
+
+.s-hero p {
+  font-size: clamp(1.1rem, 2.05vw, 2.1rem);
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  max-width: 19em;
+}
+
+/* Títulos de seção */
+.s-title {
+  color: var(--red);
+  text-align: center;
+  font-size: clamp(2rem, 3.4vw, 3.6rem);
+  margin-bottom: clamp(24px, 3.3vw, 56px);
+  position: relative;
+  z-index: 2;
+}
+
+/* Asteriscos verdes (SVG) */
+.ast { position: absolute; pointer-events: none; z-index: 3; max-width: none; height: auto; }
+.ast--traj { width: 7.8vw; right: 6.7vw; top: 15px; }
+.ast--how  { width: 8.2vw; left: 5vw; top: 2vw; }
+
+/* Trajetória */
+.traj { position: relative; padding: 35px var(--gutter) 0; }
+.traj__list { display: grid; gap: clamp(18px, 2.85vw, 48px); }
+
+.tl-card {
+  background: var(--dark);
+  border-radius: clamp(18px, 2.05vw, 32px);
+  padding: clamp(18px, 2.05vw, 34px) clamp(18px, 2.05vw, 34px) clamp(20px, 2.25vw, 38px);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+
+.tl-card:hover { transform: translateY(-6px); box-shadow: 0 24px 34px -16px rgba(0, 0, 0, .5); }
+
+.tl-card h3 {
+  color: var(--green);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2.35vw, 2.6rem);
+  letter-spacing: -.035em;
+  margin-bottom: clamp(8px, .9vw, 16px);
+}
+
+.tl-card p {
+  color: var(--cream);
+  font-size: clamp(.92rem, 1.6vw, 1.7rem);
+  line-height: 1.2;
+  letter-spacing: -.015em;
+}
+
+/* Como eu trabalho */
+.how { position: relative; padding: clamp(50px, 6.4vw, 110px) var(--gutter) clamp(50px, 6.1vw, 104px); }
+
+.how__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(12px, 2.05vw, 34px);
+}
+
+.how__item {
+  background: var(--dark);
+  border-radius: clamp(16px, 1.75vw, 28px);
+  aspect-ratio: 250 / 155;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  font-size: clamp(1rem, 1.75vw, 1.9rem);
+  transition: transform .4s var(--ease), background-color .3s var(--ease);
+}
+
+.how__item:hover { transform: translateY(-6px); background-color: #2f2f2f; }
+
+/* Etapas clicáveis: o card é um botão, com um "+" no canto e uma frase avisando */
+.how .s-title { margin-bottom: clamp(8px, 1vw, 14px); }
+
+.how__sub {
+  text-align: center;
+  font-size: clamp(.95rem, 1.35vw, 1.35rem);
+  letter-spacing: -.01em;
+  opacity: .75;
+  margin-bottom: clamp(24px, 3.3vw, 56px);
+  position: relative;
+  z-index: 2;
+}
+
+.how__list li { display: block; }
+
+button.how__item {
+  appearance: none;
+  border: 0;
+  width: 100%;
+  position: relative;
+  font-family: var(--body);
+  cursor: pointer;
+}
+
+.how__plus {
+  position: absolute;
+  top: clamp(8px, 1vw, 16px);
+  right: clamp(8px, 1vw, 16px);
+  width: clamp(22px, 2.1vw, 34px);
+  height: clamp(22px, 2.1vw, 34px);
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  font: 700 clamp(.95rem, 1.5vw, 1.5rem)/1 var(--body);
+  font-style: normal;
+  transition: transform .4s var(--ease), background-color .3s var(--ease), color .3s var(--ease);
+}
+
+.how__item:hover .how__plus,
+.how__item:focus-visible .how__plus { transform: rotate(90deg) scale(1.12); background: var(--red); color: var(--cream); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .how__plus { animation: ping 2.4s ease-out infinite; }
+  @keyframes ping {
+    0%   { box-shadow: 0 0 0 0 rgba(198, 227, 132, .55); }
+    70%, 100% { box-shadow: 0 0 0 12px rgba(198, 227, 132, 0); }
+  }
+}
+
+/* Pop-up da etapa */
+html.step-open { overflow: hidden; }
+
+.step {
+  border: 0;
+  padding: 0;
+  margin: auto;
+  background: transparent;
+  color: var(--cream);
+  width: min(600px, 92vw);
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+}
+
+.step::backdrop {
+  background: rgba(20, 20, 20, .6);
+  backdrop-filter: blur(4px);
+}
+
+.step[open] { animation: step-in .55s var(--ease); }
+.step[open]::backdrop { animation: step-fade .4s var(--ease); }
+
+@keyframes step-in {
+  from { opacity: 0; transform: translateY(24px) scale(.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes step-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.step__card {
+  position: relative;
+  background: var(--dark);
+  border-radius: clamp(18px, 2.05vw, 32px);
+  padding: 14px clamp(22px, 3.6vw, 44px) clamp(20px, 2.6vw, 30px);
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .6);
+}
+
+.step__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--cream);
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .4s var(--ease), background-color .3s var(--ease), color .3s var(--ease);
+}
+
+.step__close:hover { transform: rotate(90deg) scale(1.08); background: var(--green); color: var(--ink); }
+
+/* barra do topo: "Etapa X de 4" na mesma altura do ×, como antes */
+.step__bar {
+  display: flex;
+  align-items: center;
+  height: 42px;                 /* mesma altura do botão × (centros alinhados) */
+  padding-right: 56px;
+  margin-bottom: clamp(16px, 2.2vw, 26px);
+}
+
+.step__num {
+  background: var(--red);
+  color: var(--cream);
+  border-radius: 4px;
+  padding: 7px 12px;
+  font: 600 .85rem/1 var(--body);
+}
+
+/* ícone num quadradinho (como os do header) colado no título */
+.step__head {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 22px);
+  margin-bottom: clamp(18px, 2.4vw, 28px);
+}
+
+.step__tile {
+  flex: none;
+  width: clamp(64px, 9vw, 92px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: #2f2f2f;
+  border-radius: clamp(14px, 1.6vw, 20px);
+}
+
+.step__icon { width: 62%; max-width: none; }
+
+.step h3 {
+  color: var(--green);
+  font-size: clamp(2rem, 5.4vw, 3.4rem);
+  min-width: 0;
+}
+
+.step p {
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  line-height: 1.38;
+  letter-spacing: -.01em;
+}
+
+.step__body { animation: step-swap .45s var(--ease); }
+@keyframes step-swap { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+
+.step__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: clamp(22px, 3vw, 34px);
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 249, 234, .22);
+}
+
+.step__dots { display: flex; gap: 8px; }
+
+.step__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 249, 234, .3);
+  cursor: pointer;
+  transition: width .4s var(--ease), background-color .3s var(--ease);
+}
+
+.step__dot.is-on { width: 28px; background: var(--green); }
+
+.step__arrows { display: flex; gap: 12px; }
+
+.step__arrow {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--cream);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform .35s var(--ease), background-color .3s var(--ease), color .3s var(--ease);
+}
+
+.step__arrow:hover { transform: scale(1.12); background: var(--green); color: var(--ink); }
+.how__item img { width: 36%; max-width: none; margin-block: -2%; }
+
+/* Por que tubarões? */
+.why {
+  position: relative;
+  overflow: hidden;
+  background: var(--dark);
+  text-align: center;
+  padding: clamp(50px, 5.5vw, 100px) 20px clamp(44px, 5.1vw, 96px);
+}
+
+.why h2 {
+  position: relative;
+  z-index: 1;
+  color: var(--green);
+  font-size: clamp(2.2rem, 4.6vw, 5rem);
+  margin-bottom: clamp(24px, 3.7vw, 64px);
+}
+
+.why p {
+  position: relative;
+  z-index: 1;
+  color: var(--cream);
+  font-size: clamp(1rem, 1.75vw, 1.9rem);
+  line-height: 1.17;
+  letter-spacing: -.015em;
+  max-width: 36em;
+  margin: 0 auto;
+}
+
+.why__shark { position: absolute; bottom: 0; width: 27.7vw; max-width: none; z-index: 0; }
+.why__shark--l { left: 0; }
+.why__shark--r { right: 0; }
+
+/* Tablet e celular */
+@media (max-width: 1000px) {
+  .s-hero { display: block; padding: 30px var(--gutter) 10px; min-height: 0; text-align: center; }
+  /* carta centralizada na tela, sempre dentro da largura disponível (ajuste --license-w se o PNG tiver margem transparente) */
+  .s-hero__license { --license-w: 100%; position: relative; left: auto; top: auto; width: min(var(--license-w), 640px); margin: 0 auto 10px; }
+  .s-hero p { margin-inline: auto; }
+  .s-hero h1 br { display: none; }
+  .ast--traj, .ast--how { width: 70px; top: 0; }
+  .why__shark { width: 46vw; opacity: .5; }
+}
+
+@media (max-width: 700px) {
+  .how__list { grid-template-columns: repeat(2, 1fr); }
+  .how__item img { width: 30%; }
+}
+
+
+/* ==========================================================
+   Animações
+   ========================================================== */
+
+/* Entrada ao rolar (classe js-reveal e data-reveal são colocados pelo sobre.js) */
+.js-reveal [data-reveal] {
+  --rx: 0px;
+  --ry: 36px;
+  --rs: 1;
+  opacity: 0;
+  translate: var(--rx) var(--ry);
+  scale: var(--rs);
+  transition:
+    opacity .9s var(--ease) var(--d, 0s),
+    translate .9s var(--ease) var(--d, 0s),
+    scale .9s var(--ease) var(--d, 0s);
+}
+
+.js-reveal [data-reveal="down"]  { --ry: -26px; }
+.js-reveal [data-reveal="left"]  { --rx: -70px; --ry: 0px; }
+.js-reveal [data-reveal="right"] { --rx: 70px;  --ry: 0px; }
+.js-reveal [data-reveal="zoom"]  { --ry: 0px;   --rs: .85; }
+.js-reveal [data-reveal="fade"]  { --ry: 0px; }
+
+.js-reveal [data-reveal].is-in { opacity: 1; translate: 0 0; scale: 1; }
+
+/* Asteriscos balançando */
+@media (prefers-reduced-motion: no-preference) {
+  .ast { animation: sway 7s ease-in-out infinite alternate; }
+  .ast--how { animation-delay: -3.5s; }
+
+  @keyframes sway {
+    from { rotate: -6deg; }
+    to   { rotate: 6deg; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+}
