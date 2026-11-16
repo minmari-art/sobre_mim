@@ -311,6 +311,9 @@ new MutationObserver(trimAll).observe(document.body, { childList: true, subtree:
   dlg.addEventListener('close', () => document.documentElement.classList.remove('step-open'));
 })();
 
-const msg = "Olá Min, vim pelo seu portfólio! Gostaria de mais informações.";
-document.getElementById("zap").href =
-  "https://wa.me/5511965270351?text=" + encodeURIComponent(msg);
+/* WhatsApp: só atualiza se existir um elemento #zap na página (aqui o link já está no HTML) */
+const zap = document.getElementById("zap");
+if (zap) {
+  const msg = "Olá Min, vim pelo seu portfólio! Gostaria de mais informações.";
+  zap.href = "https://wa.me/5511965270351?text=" + encodeURIComponent(msg);
+}
