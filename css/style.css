@@ -739,24 +739,22 @@ html.step-open { overflow: hidden; }
   .s-hero h1 br { display: none; }
   .ast--traj, .ast--how { width: 70px; top: 0; }
 
-  /* Tubarões: saem do "absolute" e ficam numa linha embaixo do texto, colados nos cantos */
+  /* Caudas nas laterais, com o texto no meio (igual ao desktop, só que menor).
+     --sw = largura da imagem da cauda (quadrada, então a altura é igual).
+     O texto ganha uma folga lateral (padding-inline) pra ficar sempre entre as duas caudas. */
   .why {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding-bottom: 0;
+    --sw: min(32vw, 280px);
+    padding-inline: calc(var(--sw) * .55);
+    min-height: calc(var(--sw) * .95);
   }
-  .why h2, .why p { grid-column: 1 / -1; }
-  .why p { margin-bottom: clamp(20px, 5vw, 40px); }
   .why__shark {
-    position: static;
-    grid-row: 3;
-    width: min(36vw, 280px);
+    width: var(--sw);
     height: auto;
     opacity: 1;
-    align-self: end;
   }
-  .why__shark--l { justify-self: start; margin-left: -20px; }
-  .why__shark--r { justify-self: end; margin-right: -20px; }
+  /* a imagem tem margem transparente nas laterais: empurra pra fora pra a cauda encostar na borda da tela */
+  .why__shark--l { left: calc(var(--sw) * -.3); }
+  .why__shark--r { right: calc(var(--sw) * -.3); }
 }
 
 @media (max-width: 700px) {
@@ -782,12 +780,9 @@ html.step-open { overflow: hidden; }
   .how__sub { margin-bottom: 22px; }
   .how__item { font-size: 1rem; }
 
-  /* tubarões menores, dentro do rodapé, sem cobrir o texto */
-  .why { padding: 44px 18px 0; }
+  /* caudas um pouco menores, texto no meio entre elas */
+  .why { --sw: 34vw; padding-block: 44px; }
   .why p { font-size: 1rem; line-height: 1.3; }
-  .why__shark { width: 38vw; }
-  .why__shark--l { margin-left: -18px; }
-  .why__shark--r { margin-right: -18px; }
 
   .step__head { gap: 14px; }
   .step__tile { width: 64px; }
