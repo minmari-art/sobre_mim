@@ -89,8 +89,15 @@
 </section>
 
 <section class="why">
-  <img class="why__shark why__shark--l" src="galeria/Tubar%C3%A3o%20Off%20White%20Lado%20Esquerdo%20Final%20da%20P%C3%A1gina.png" alt="">
-  <img class="why__shark why__shark--r" src="galeria/Tubar%C3%A3o%20Off%20White%20Lado%20Direito%20Final%20da%20P%C3%A1gina.png" alt="">
+  <!-- Até 1000px de largura entram as caudas (Bloco 4); acima disso continuam os tubarões inteiros -->
+  <picture>
+    <source media="(max-width: 1000px)" srcset="galeria/Cauda%20Tubar%C3%A3o%20Off%20White%20Lado%20Esquerdo%20Bloco%204.png">
+    <img class="why__shark why__shark--l" src="galeria/Tubar%C3%A3o%20Off%20White%20Lado%20Esquerdo%20Final%20da%20P%C3%A1gina.png" alt="">
+  </picture>
+  <picture>
+    <source media="(max-width: 1000px)" srcset="galeria/Cauda%20Tubar%C3%A3o%20Off%20White%20Lado%20Direito%20Bloco%204.png">
+    <img class="why__shark why__shark--r" src="galeria/Tubar%C3%A3o%20Off%20White%20Lado%20Direito%20Final%20da%20P%C3%A1gina.png" alt="">
+  </picture>
   <h2>Por que tubarões?</h2>
   <p>Tubarões fazem parte da minha história desde criança como herança do meu pai, que me apresentou ao fascínio por eles. Mas o que me conecta de verdade ao símbolo é o que pouca gente enxerga: tubarões não são irracionais, são guiados por percepção e instinto. É essa sensibilidade em movimento que quero transmitir através do meu design.</p>
 </section>
