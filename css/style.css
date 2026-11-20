@@ -829,3 +829,9 @@ html.step-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
 }
+
+/* A entrada ao rolar continua funcionando mesmo com "reduzir movimento" ativo no sistema
+   (sem isso o bloco acima zerava o tempo da animação e ela parecia não existir). */
+.js-reveal [data-reveal] {
+  transition-duration: .9s !important;
+}
