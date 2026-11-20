@@ -63,9 +63,10 @@ new MutationObserver(trimAll).observe(document.body, { childList: true, subtree:
 
 /* Animação de entrada: os elementos aparecem conforme a página é rolada.
    Cada grupo = [seletor, tipo (up, down, left, right, zoom, fade), atraso entre itens, atraso inicial] em segundos.
-   Se o visitante prefere menos movimento, nada é escondido nem animado. */
+   Roda para todos os visitantes, inclusive quem ativou "reduzir movimento" no sistema. */
 (function () {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  // (antes a animação era cancelada para quem usa "reduzir movimento"; agora roda para todos)
+  if (!('IntersectionObserver' in window)) return;
 
   const groups = [
     ['.topbar > *',        'down',  .08, 0],
@@ -108,9 +109,18 @@ new MutationObserver(trimAll).observe(document.body, { childList: true, subtree:
         el.style.removeProperty('--d');
       }, (d + 1.1) * 1000);
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+  }, { threshold: 0.1, rootMargin: matchMedia('(max-width: 1000px)').matches ? '0px' : '0px 0px -6% 0px' });
 
   items.forEach(([el]) => io.observe(el));
+
+  // Rede de segurança: ao chegar no fim da página, revela tudo o que ainda estiver escondido.
+  let fimChecado = false;
+  addEventListener('scroll', () => {
+    if (fimChecado) return;
+    if (innerHeight + scrollY < document.documentElement.scrollHeight - 4) return;
+    fimChecado = true;
+    items.forEach(([el]) => { if (el.hasAttribute('data-reveal') && !el.classList.contains('is-in')) el.classList.add('is-in'); });
+  }, { passive: true });
 })();
 
 
